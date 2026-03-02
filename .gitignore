@@ -1,0 +1,24 @@
+# Environment files
+.env
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+
+# FAISS index (very important)
+data/faiss_index/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local project documents (do not upload)
+Synopsis.pptx
+Synopsis Report.pdf
+FIle management.txt
+Core.txt
+agent_dashboard.txt
