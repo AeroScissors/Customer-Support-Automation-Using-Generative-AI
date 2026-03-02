@@ -22,3 +22,10 @@ Synopsis Report.pdf
 FIle management.txt
 Core.txt
 agent_dashboard.txt
+
+
+# Backend local environment
+backend/.venv/
+
+# Backend local data (not for repo)
+backend/data/
