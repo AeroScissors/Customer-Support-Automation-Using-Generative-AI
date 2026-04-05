@@ -2,11 +2,10 @@
 
 > A full-stack AI-powered customer support system with RAG pipeline, decision engine, and multi-role dashboards — deployed on free-tier cloud infrastructure.
 
-[![Frontend](https://img.shields.io/badge/Frontend-Vercel-black?logo=vercel)](https://customer-support-automation-using-g.vercel.app)
-[![Backend](https://img.shields.io/badge/Backend-HuggingFace%20Spaces-yellow?logo=huggingface)](https://aeroscissors-nebulacore.hf.space)
-[![Database](https://img.shields.io/badge/Database-MongoDB%20Atlas-green?logo=mongodb)](https://cloud.mongodb.com)
-[![LLM](https://img.shields.io/badge/LLM-Groq%20%7C%20Llama%203.1-orange)](https://console.groq.com)
-
+[![Frontend](https://img.shields.io/badge/🖥%20Frontend-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://customer-support-automation-using-g.vercel.app)
+[![Backend](https://img.shields.io/badge/⚙%20Backend-HuggingFace%20Spaces-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)](https://aeroscissors-nebulacore.hf.space)
+[![Database](https://img.shields.io/badge/🗄%20Database-MongoDB%20Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://cloud.mongodb.com)
+[![LLM](https://img.shields.io/badge/🧠%20LLM-Groq%20%7C%20Llama%203.1-F55036?style=for-the-badge)](https://console.groq.com)
 ---
 
 ##  Live Deployment
@@ -272,8 +271,12 @@ User Message
 
 ---
 
-##  Author
+##  Authors
 
-**AeroScissors**  
+**Yuvraj Singh Aswal**  
+**Himanshu Maan**  
+**Munish Sharma**  
+**Ronit Yadav**  
+
 College Project — GenAI Customer Support Automation  
 Stack: Python · FastAPI · React · FAISS · MongoDB · Groq · HuggingFace · Vercel
