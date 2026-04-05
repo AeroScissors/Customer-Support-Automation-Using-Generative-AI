@@ -1,16 +1,13 @@
+# File: backend/app/api/chat.py
+
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import Optional
 
-# Core orchestration pipeline
 from app.core.orchestration import orchestrate_query
-
-# Ticket service (INTERNAL USE ONLY)
 from app.services.ticket_service import TicketService
 
-# -------------------------------------------------
-# Router (PREFIX DEFINED HERE ✅)
-# -------------------------------------------------
+
 router = APIRouter(
     prefix="/chat",
     tags=["Customer Chat"],
@@ -18,9 +15,11 @@ router = APIRouter(
 
 ticket_service = TicketService()
 
+
 # -------------------------------------------------
 # Request / Response Schemas
 # -------------------------------------------------
+
 class ChatRequest(BaseModel):
     query: str
     user_id: Optional[str] = None
@@ -34,8 +33,9 @@ class ChatResponse(BaseModel):
 
 
 # -------------------------------------------------
-# Customer Chat Endpoint (ONLY ENTRY POINT)
+# Customer Chat Endpoint
 # -------------------------------------------------
+
 @router.post("/", response_model=ChatResponse)
 def customer_chat(payload: ChatRequest):
     """
@@ -47,45 +47,57 @@ def customer_chat(payload: ChatRequest):
     - AI internals are NEVER exposed
     """
 
+    # -----------------------------
+    # Input validation
+    # -----------------------------
     if not payload.query or not payload.query.strip():
         raise HTTPException(status_code=400, detail="Query cannot be empty")
 
     try:
-        # -------------------------------------------------
-        # 1. Run orchestration (AI brain)
-        # -------------------------------------------------
+        # -----------------------------
+        # 1. Run AI orchestration
+        # -----------------------------
         orchestration_result = orchestrate_query(
             query=payload.query
         )
 
-        response_text = orchestration_result.get("final_response")
+        # -----------------------------
+        # 2. Clean response handling (FIXED)
+        # -----------------------------
+        response_text = (
+            orchestration_result.get("final_response")
+            or "Your request has been forwarded to a support agent."
+        )
 
-        if not response_text:
-            response_text = (
-                "Thanks for reaching out. "
-                "Your issue has been forwarded to a support agent."
-            )
-
-        # -------------------------------------------------
-        # 2. Create ticket (INTERNAL)
-        # -------------------------------------------------
+        # -----------------------------
+        # 3. Create ticket
+        # -----------------------------
         ticket = ticket_service.create_ticket(
             user_id=payload.user_id or "anonymous",
             query=payload.query,
             orchestration_result=orchestration_result,
         )
 
-        # -------------------------------------------------
-        # 3. Return CUSTOMER-SAFE response
-        # -------------------------------------------------
+        # -----------------------------
+        # 4. Ensure valid status (SAFETY)
+        # -----------------------------
+        status = ticket.status
+        if status not in ["AI_RESOLVED", "ESCALATED"]:
+            status = "ESCALATED"
+
+        # -----------------------------
+        # 5. Return response
+        # -----------------------------
         return ChatResponse(
             message=response_text,
             ticket_id=ticket.ticket_id,
-            status=ticket.status,
+            status=status,
         )
 
     except Exception:
-        # Absolute safety net — customer never sees internals
+        # -----------------------------
+        # Absolute fallback (never expose internals)
+        # -----------------------------
         return ChatResponse(
             message=(
                 "We’re experiencing a temporary issue. "

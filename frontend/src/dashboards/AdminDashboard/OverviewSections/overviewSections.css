@@ -1,0 +1,332 @@
+/* =====================================================
+   0. OVERVIEW LAYOUT CONTROL (SCROLL FIX)
+===================================================== */
+
+.overview-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Stops page-level scroll */
+}
+
+.stats-row {
+  flex-shrink: 0;
+}
+
+.content-grid {
+  flex: 1;
+  display: grid;
+  gap: 24px;
+  align-items: stretch;
+  overflow: hidden; /* Prevents inner scroll explosion */
+}
+
+
+/* =====================================================
+   1. SHARED CARD BASE (CLEAN FIX)
+===================================================== */
+
+.analytics-card,
+.sla-card,
+.kb-card {
+  position: relative;
+  padding: 22px 24px;
+  border-radius: 20px;
+
+  background: linear-gradient(
+    160deg,
+    rgba(20, 30, 60, 0.65),
+    rgba(12, 18, 40, 0.55)
+  );
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 20px 60px rgba(0,0,0,0.6);
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+
+/* =====================================================
+   2. INTERNAL STYLES
+===================================================== */
+
+/* Top highlight line */
+.analytics-card::before,
+.sla-card::before,
+.kb-card::before {
+  content: "";
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 0;
+  height: 2px;
+  border-radius: 10px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.4),
+    transparent
+  );
+  opacity: 0.4;
+}
+
+
+/* --- CHART PANELS --- */
+
+.analytics-line,
+.analytics-bar {
+  position: relative;
+  background: rgba(10, 18, 35, 0.6);
+  border-radius: 14px;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(255,255,255,0.05);
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.analytics-line {
+  min-height: 180px;
+}
+
+.analytics-bar {
+  min-height: 120px;
+}
+
+.analytics-line::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  pointer-events: none;
+  box-shadow: inset 0 0 40px rgba(76,195,255,0.05);
+}
+
+
+/* --- LEGEND --- */
+
+.analytics-legend {
+  display: flex;
+  gap: 20px;
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.ai-dot {
+  background: #4cc9f0;
+  box-shadow: 0 0 10px rgba(76,195,255,0.6);
+}
+
+.human-dot {
+  background: #9b6cff;
+  box-shadow: 0 0 10px rgba(155,108,255,0.6);
+}
+
+
+/* --- SLA SECTION --- */
+
+.sla-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(10, 18, 35, 0.6);
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.06);
+  margin-bottom: 18px;
+}
+
+.sla-metric {
+  display: flex;
+  flex-direction: column;
+}
+
+.sla-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.sla-value {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.sla-value.red {
+  color: var(--accent-red);
+  text-shadow: 0 0 12px rgba(255,92,92,0.4);
+}
+
+.sla-chart {
+  position: relative;
+  background: rgba(10, 18, 35, 0.6);
+  border-radius: 14px;
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,0.05);
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  min-height: 240px;
+}
+
+.sla-chart::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  pointer-events: none;
+  box-shadow: inset 0 0 40px rgba(255,92,92,0.08);
+}
+
+
+/* --- KNOWLEDGE BASE --- */
+
+.kb-table-header {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 90px;
+  padding: 12px 0;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--text-muted);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 4px;
+}
+
+.kb-row {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 90px;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  transition: background 0.25s ease;
+}
+
+.kb-row:last-child {
+  border-bottom: none;
+}
+
+.kb-row:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+.kb-title {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.kb-badge {
+  font-size: 11px;
+  padding: 5px 12px;
+  border-radius: 10px;
+  width: fit-content;
+  font-weight: 500;
+}
+
+.kb-badge.security {
+  background: rgba(76,195,255,0.18);
+  color: #4cc9f0;
+}
+
+.kb-badge.ai-guide {
+  background: rgba(155,108,255,0.18);
+  color: #9b6cff;
+}
+
+.kb-badge.billing {
+  background: rgba(255,159,67,0.18);
+  color: #ff9f43;
+}
+
+.kb-date {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.kb-btn {
+  background: rgba(76,195,255,0.15);
+  border: 1px solid rgba(76,195,255,0.35);
+  color: #4cc9f0;
+  padding: 5px 12px;
+  font-size: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.kb-btn:hover {
+  background: rgba(76,195,255,0.25);
+  box-shadow: 0 0 12px rgba(76,195,255,0.4);
+}
+
+
+/* =====================================================
+   3. CONTROLLED GLOW SYSTEM
+===================================================== */
+
+.analytics-card::after,
+.sla-card::after,
+.kb-card::after {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 0;
+  height: 36px;
+  border-radius: 50%;
+  filter: blur(28px);
+  transform: translateY(60%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.analytics-card::after {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(76,195,255,0.9),
+    rgba(76,195,255,0.5),
+    transparent 75%
+  );
+}
+
+.sla-card::after {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255,92,92,0.9),
+    rgba(255,92,92,0.5),
+    transparent 75%
+  );
+}
+
+.kb-card::after {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(76,195,255,0.9),
+    rgba(76,195,255,0.5),
+    transparent 75%
+  );
+}

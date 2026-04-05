@@ -1,0 +1,50 @@
+[
+  {
+    "id": "OT-001",
+    "category": "order_tracking",
+    "question": "Where is my order?",
+    "answer": "You can track your order using the tracking link sent to your registered email after shipment. If the link does not show updates, please allow up to 24 hours for tracking information to refresh."
+  },
+  {
+    "id": "OT-002",
+    "category": "order_tracking",
+    "question": "My order status says shipped but I haven't received it yet",
+    "answer": "Once an order is marked as shipped, delivery typically takes 3 to 5 business days depending on your location. Delays may occur due to courier issues or public holidays."
+  },
+  {
+    "id": "OT-003",
+    "category": "order_tracking",
+    "question": "Why is my order delayed?",
+    "answer": "Orders may be delayed due to high demand, weather conditions, or logistics constraints. If your order is delayed beyond the estimated delivery date, please contact support with your order ID."
+  },
+  {
+    "id": "OT-004",
+    "category": "order_tracking",
+    "question": "Can I change my delivery address after placing the order?",
+    "answer": "Delivery address changes are only possible before the order is shipped. Once shipped, the address cannot be modified due to courier restrictions."
+  },
+  {
+    "id": "OT-005",
+    "category": "order_tracking",
+    "question": "The tracking link is not working",
+    "answer": "Tracking links may take up to 24 hours to activate after shipment. If the issue persists, please verify the link or contact support for assistance."
+  },
+  {
+    "id": "OT-006",
+    "category": "order_tracking",
+    "question": "My order shows delivered but I did not receive it",
+    "answer": "If the tracking status shows delivered but you have not received the package, please check with neighbors or security personnel. If still unresolved, contact support within 48 hours."
+  },
+  {
+    "id": "OT-007",
+    "category": "order_tracking",
+    "question": "Do you deliver on weekends?",
+    "answer": "Weekend deliveries depend on the courier service assigned to your order. Some locations may receive deliveries on Saturdays, while Sundays are typically excluded."
+  },
+  {
+    "id": "OT-008",
+    "category": "order_tracking",
+    "question": "How do I track multiple orders?",
+    "answer": "Each order has a unique tracking link sent via email. You can track multiple orders individually using their respective tracking links."
+  }
+]

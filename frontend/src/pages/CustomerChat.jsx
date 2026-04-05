@@ -1,338 +1,237 @@
-import { Box, Typography, TextField, Button } from "@mui/material";
 import { useState, useRef, useEffect } from "react";
 import { sendChatMessage } from "../services/api";
 
 export default function CustomerChat() {
   const [messages, setMessages] = useState([
-    { role: "assistant", content: "Hello 👋 How can I help you today?" },
+    { sender: "ai", content: "Hello 👋 How can I help you today?" },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // Auto-scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
   const handleSend = async () => {
-    if (!input.trim()) return;
+    const text = input.trim();
+    if (!text || loading) return;
 
-    const userMessage = { role: "user", content: input };
-
-    // 1. Add user message immediately
-    setMessages((prev) => [...prev, userMessage]);
     setInput("");
+    setMessages((prev) => [...prev, { sender: "customer", content: text }]);
     setLoading(true);
 
     try {
-      // 2. Call API
-      const data = await sendChatMessage(input);
+      const data = await sendChatMessage(text);
 
-      // 3. Add AI response with Ticket Info
+      const aiReply =
+        data.response ||
+        (data.decision === "ESCALATE_TO_HUMAN"
+          ? "Your request has been forwarded to a support agent."
+          : "I'm unable to answer this right now. A support agent will assist you shortly.");
+
+      const ticketInfo = data.ticket_id
+        ? `\nTICKET:${data.ticket_id}|STATUS:${data.decision}`
+        : "";
+
       setMessages((prev) => [
         ...prev,
-        { 
-          role: "assistant", 
-          content: data.message, // Updated from data.response
-          ticket_id: data.ticket_id, // Capture Ticket ID
-          status: data.status        // Capture Status
-        },
+        { sender: "ai", content: aiReply + ticketInfo },
       ]);
-    } catch (error) {
-      console.error("Chat error:", error);
+    } catch (err) {
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "I'm having trouble connecting right now. Please try again." },
+        { sender: "ai", content: "Something went wrong. Please try again." },
       ]);
     } finally {
       setLoading(false);
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        background: `
-          radial-gradient(circle at 50% 30%, rgba(76,195,255,0.04), transparent 60%),
-          #0b1220
-        `,
+    <div style={{
+      minHeight: "100vh",
+      background: "var(--bg-main, #080d1a)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "20px",
+      position: "relative",
+    }}>
+      {/* AI Online indicator */}
+      <div style={{
+        position: "fixed", top: 16, right: 20,
+        display: "flex", alignItems: "center", gap: 8,
+        fontSize: 12, color: "rgba(255,255,255,0.5)",
+      }}>
+        <span style={{
+          width: 8, height: 8, borderRadius: "50%",
+          background: "#26de81",
+          boxShadow: "0 0 8px #26de81",
+          animation: "pulse 2s ease-in-out infinite",
+        }} />
+        AI Online
+      </div>
+
+      <style>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+      `}</style>
+
+      {/* Chat container */}
+      <div style={{
+        width: "100%",
+        maxWidth: 720,
+        background: "linear-gradient(145deg, rgba(16,26,50,0.9), rgba(8,14,28,0.95))",
+        border: "1px solid rgba(255,255,255,0.08)",
+        borderRadius: 20,
+        backdropFilter: "blur(20px)",
+        boxShadow: "0 30px 80px rgba(0,0,0,0.6)",
         display: "flex",
         flexDirection: "column",
-      }}
-    >
-      {/* Top Bar */}
-      <Box
-        sx={{
-          height: 64,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          px: 3,
-          borderBottom: "1px solid rgba(255,255,255,0.05)",
-          background: "rgba(11,18,32,0.7)",
-          backdropFilter: "blur(12px)",
-        }}
-      >
-        <Typography 
-          sx={{ 
-            fontWeight: 600, 
-            fontSize: "16px", 
-            letterSpacing: "0.5px", 
-            color: "#e6edf7" 
-          }}
-        >
-          Gen<span style={{ color: "#3ba6d9" }}>AI</span> Support
-        </Typography>
+        overflow: "hidden",
+        minHeight: 520,
+        maxHeight: "80vh",
+      }}>
 
-        <Box
-          sx={{
-            px: 2,
-            py: 0.5,
-            borderRadius: 20,
-            fontSize: 12,
-            background: "rgba(255, 255, 255, 0.05)", 
-            color: "#94a3b8", 
-            border: "1px solid rgba(255,255,255,0.05)"
-          }}
-        >
-          ● AI Online
-        </Box>
-      </Box>
+        {/* Header */}
+        <div style={{
+          padding: "16px 24px",
+          borderBottom: "1px solid rgba(255,255,255,0.06)",
+          textAlign: "center",
+          fontSize: 11, letterSpacing: 2,
+          color: "rgba(255,255,255,0.3)",
+          textTransform: "uppercase",
+        }}>
+          Secure Conversation
+        </div>
 
-      {/* Main Chat Layout */}
-      <Box
-        sx={{
-          flex: 1,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          p: 3,
-        }}
-      >
-        {/* Chat Card */}
-        <Box
-          sx={{
-            width: "100%",
-            maxWidth: 880,
-            height: "78vh",
-            borderRadius: "14px",
-            display: "flex",
-            flexDirection: "column",
-            backdropFilter: "blur(14px)",
-            border: "1px solid rgba(255,255,255,0.08)",
-            background: `
-              linear-gradient(
-                145deg,
-                rgba(255,255,255,0.06),
-                rgba(255,255,255,0.02)
-              )
-            `,
-            boxShadow: `
-              0 20px 60px rgba(0,0,0,0.45),
-              inset 0 1px 0 rgba(255,255,255,0.04)
-            `,
-          }}
-        >
-          {/* Messages Area */}
-          <Box
-            sx={{
-              flex: 1,
-              pt: 3, 
-              px: 4, 
-              pb: 4,
-              gap: 3,
-              overflowY: "auto",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            {/* Intro Label */}
-            <Box sx={{ borderBottom: "1px solid rgba(255,255,255,0.04)", pb: 2, mb: 0 }}>
-               <Typography
-                sx={{
-                  fontSize: "11px",
-                  color: "rgba(255,255,255,0.5)",
-                  letterSpacing: "1px",
-                  textTransform: "uppercase",
-                  fontWeight: 500,
-                  textAlign: "center"
-                }}
-              >
-                Secure Conversation
-              </Typography>
-            </Box>
+        {/* Messages */}
+        <div style={{
+          flex: 1, overflowY: "auto", padding: "24px",
+          display: "flex", flexDirection: "column", gap: 20,
+          scrollbarWidth: "thin",
+          scrollbarColor: "rgba(255,255,255,0.06) transparent",
+        }}>
+          {messages.map((msg, idx) => {
+            const isAI = msg.sender === "ai";
+            const parts = msg.content.split("\n");
+            const mainText = parts[0];
+            const ticketLine = parts.find(p => p.startsWith("TICKET:"));
 
-            {/* Dynamic Messages */}
-            {messages.map((msg, index) => (
-              <Box
-                key={index}
-                sx={{
-                  alignSelf: msg.role === "user" ? "flex-end" : "flex-start",
-                  maxWidth: "70%",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: msg.role === "user" ? "flex-end" : "flex-start",
-                }}
-              >
-                {/* AI Label (Only show for assistant messages) */}
-                {msg.role === "assistant" && (
-                   <Typography
-                    sx={{
-                      fontSize: "10px",
-                      color: "rgba(255,255,255,0.4)",
-                      mb: 0.5,
-                      ml: 0.5,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.5px"
-                    }}
-                  >
+            return (
+              <div key={idx} style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: isAI ? "flex-start" : "flex-end",
+                gap: 4,
+              }}>
+                {isAI && (
+                  <span style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", letterSpacing: 1, textTransform: "uppercase", marginLeft: 4 }}>
                     AI Assistant
-                  </Typography>
+                  </span>
                 )}
 
-                <Box
-                  sx={{
-                    background:
-                      msg.role === "user"
-                        ? "#3ba6d9" // Corporate Blue
-                        : "rgba(255,255,255,0.06)",
-                    px: 2,
-                    py: 1.5,
-                    borderRadius:
-                      msg.role === "user"
-                        ? "12px 12px 4px 12px"
-                        : "12px 12px 12px 4px",
-                    color: msg.role === "user" ? "#0b1220" : "#e6edf7",
-                    fontWeight: msg.role === "user" ? 500 : 400,
-                    boxShadow: msg.role === "user" ? "0 4px 12px rgba(59, 166, 217, 0.2)" : "none"
-                  }}
-                >
-                  {/* Message Content */}
-                  {msg.content}
+                <div style={{
+                  maxWidth: "75%",
+                  padding: "12px 18px",
+                  borderRadius: isAI ? "18px 18px 18px 4px" : "18px 18px 4px 18px",
+                  background: isAI
+                    ? "rgba(255,255,255,0.05)"
+                    : "linear-gradient(135deg, rgba(94,182,252,0.2), rgba(76,195,255,0.1))",
+                  border: isAI
+                    ? "1px solid rgba(255,255,255,0.08)"
+                    : "1px solid rgba(94,182,252,0.2)",
+                  fontSize: 14,
+                  lineHeight: 1.6,
+                  color: "#e6f1ff",
+                }}>
+                  {mainText}
+                </div>
 
-                  {/* Ticket Info Display (New) */}
-                  {msg.ticket_id && (
-                    <Box
-                      sx={{
-                        mt: 1.5,
-                        pt: 1.5,
-                        borderTop: "1px solid rgba(255,255,255,0.1)",
-                        fontSize: 11,
-                        color: "rgba(255,255,255,0.5)",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 1
-                      }}
-                    >
-                      <span style={{ fontWeight: 600, color: "#3ba6d9" }}>TICKET:</span> {msg.ticket_id}
-                      <span style={{ margin: "0 4px" }}>|</span>
-                      <span style={{ fontWeight: 600, color: "#e6edf7" }}>STATUS:</span> {msg.status}
-                    </Box>
-                  )}
-                </Box>
-              </Box>
-            ))}
+                {/* Ticket info pill */}
+                {ticketLine && (
+                  <div style={{
+                    fontSize: 10, color: "rgba(255,255,255,0.25)",
+                    marginLeft: 4, letterSpacing: 0.5,
+                  }}>
+                    {ticketLine.replace("TICKET:", "").replace("|STATUS:", " · ")}
+                  </div>
+                )}
+              </div>
+            );
+          })}
 
-            {/* Loading Indicator */}
-            {loading && (
-              <Box
-                sx={{
-                  alignSelf: "flex-start",
-                  maxWidth: "70%",
-                }}
-              >
-                 <Typography
-                    sx={{ fontSize: "10px", color: "rgba(255,255,255,0.4)", mb: 0.5, ml: 0.5, textTransform: "uppercase" }}
-                  >
-                    AI Assistant
-                  </Typography>
-                <Box
-                  sx={{
-                    background: "rgba(255,255,255,0.06)",
-                    px: 2,
-                    py: 1.5,
-                    borderRadius: "12px 12px 12px 4px",
-                    color: "rgba(230,237,247,0.7)",
-                    fontStyle: "italic",
-                    fontSize: "0.9rem"
-                  }}
-                >
-                  Typing...
-                </Box>
-              </Box>
-            )}
+          {/* ✅ Typing indicator */}
+          {loading && (
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 4 }}>
+              <span style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", letterSpacing: 1, textTransform: "uppercase", marginLeft: 4 }}>
+                AI Assistant
+              </span>
+              <div className="ai-typing-indicator">
+                <div className="ai-typing-dot" />
+                <div className="ai-typing-dot" />
+                <div className="ai-typing-dot" />
+              </div>
+            </div>
+          )}
 
-            <div ref={messagesEndRef} />
-          </Box>
+          <div ref={messagesEndRef} />
+        </div>
 
-          {/* Input Area */}
-          <Box
-            sx={{
-              p: 2,
-              borderTop: "1px solid rgba(255,255,255,0.05)",
+        {/* Input */}
+        <div style={{
+          padding: "16px 24px",
+          borderTop: "1px solid rgba(255,255,255,0.06)",
+          display: "flex", gap: 12, alignItems: "center",
+        }}>
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Type your message..."
+            disabled={loading}
+            style={{
+              flex: 1,
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              borderRadius: 12, padding: "12px 16px",
+              color: "#e6f1ff", fontSize: 14, outline: "none",
+              transition: "border-color 0.2s",
+            }}
+            onFocus={e => e.target.style.borderColor = "rgba(76,195,255,0.4)"}
+            onBlur={e => e.target.style.borderColor = "rgba(255,255,255,0.08)"}
+          />
+
+          <button
+            onClick={handleSend}
+            disabled={loading || !input.trim()}
+            style={{
+              background: loading || !input.trim()
+                ? "rgba(76,195,255,0.2)"
+                : "linear-gradient(135deg, #5EB6FC, #4cc9f0)",
+              border: "none", borderRadius: 12,
+              padding: "12px 24px",
+              color: loading || !input.trim() ? "rgba(255,255,255,0.3)" : "#000",
+              fontWeight: 700, fontSize: 13, letterSpacing: 0.5,
+              cursor: loading || !input.trim() ? "not-allowed" : "pointer",
+              transition: "all 0.2s ease",
+              textTransform: "uppercase",
             }}
           >
-            <Box
-              sx={{
-                background: "rgba(255,255,255,0.02)",
-                border: "1px solid rgba(255,255,255,0.06)",
-                borderRadius: 999,
-                padding: "4px 4px 4px 16px",
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-              }}
-            >
-              <TextField
-                fullWidth
-                placeholder="Type your message..."
-                variant="standard"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !loading) handleSend();
-                }}
-                InputProps={{
-                  disableUnderline: true,
-                  sx: {
-                    color: "#e6edf7",
-                    fontSize: "0.95rem",
-                  },
-                }}
-              />
-
-              <Button
-                variant="contained"
-                onClick={handleSend}
-                disabled={loading}
-                sx={{
-                  borderRadius: 999,
-                  background: "#3ba6d9",
-                  color: "#0b1220",
-                  fontWeight: 600,
-                  px: 3,
-                  py: 1,
-                  boxShadow: "none",
-                  whiteSpace: "nowrap",
-                  minWidth: "80px",
-                  "&:hover": {
-                    background: "#3399cc",
-                    boxShadow: "none",
-                  },
-                  "&:disabled": {
-                    background: "rgba(255,255,255,0.1)",
-                    color: "rgba(255,255,255,0.3)"
-                  }
-                }}
-              >
-                {loading ? "..." : "Send"}
-              </Button>
-            </Box>
-          </Box>
-        </Box>
-      </Box>
-    </Box>
+            {loading ? "..." : "Send"}
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

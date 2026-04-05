@@ -1,23 +1,49 @@
-const BASE_URL = "http://127.0.0.1:8000";
+// File: frontend/src/services/api.js
 
+const BASE_URL = "https://aeroscissors-nebulacore.hf.space";
 // --------------------------------------------------
-// Helper: get auth headers (ADMIN / AGENT)
+// Auth Helpers
 // --------------------------------------------------
+function getToken() {
+  return sessionStorage.getItem("access_token");
+}
+
+function isTokenExpired(token) {
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    const now = Date.now() / 1000;
+    return payload.exp < now;
+  } catch {
+    return true;
+  }
+}
+
 function authHeaders() {
-  // ✅ Updated: Retrieve token from sessionStorage
-  const token = sessionStorage.getItem("access_token");
+  const token = getToken();
 
-  return token
-    ? {
-        Authorization: `Bearer ${token}`,
-      }
-    : {};
+  if (!token) return {};
+
+  if (isTokenExpired(token)) {
+    sessionStorage.clear();
+    window.location.href = "/login";
+    return {};
+  }
+
+  return {
+    Authorization: `Bearer ${token}`,
+  };
 }
 
 // --------------------------------------------------
 // Helper: handle HTTP responses
 // --------------------------------------------------
 async function handleResponse(response) {
+  if (response.status === 401) {
+    sessionStorage.clear();
+    window.location.href = "/login";
+    throw new Error("Session expired");
+  }
+
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
     const message =
@@ -26,7 +52,22 @@ async function handleResponse(response) {
       "API request failed";
     throw new Error(message);
   }
+
   return response.json();
+}
+
+// --------------------------------------------------
+// 🔴 NEW: Agent Heartbeat
+// --------------------------------------------------
+export async function pingAgent() {
+  const response = await fetch(`${BASE_URL}/agent/ping`, {
+    method: "POST",
+    headers: {
+      ...authHeaders(),
+    },
+  });
+
+  return handleResponse(response);
 }
 
 // --------------------------------------------------
@@ -41,15 +82,28 @@ export async function sendChatMessage(message) {
     body: JSON.stringify({
       query: message,
       user_id: "demo_user",
-      order_id: "demo_order",
     }),
   });
 
-  if (!response.ok) {
-    throw new Error("Failed to send message");
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error("Invalid JSON response from server");
   }
 
-  return response.json();
+  if (!response.ok) {
+    const errorMessage =
+      data?.detail || data?.message || "Failed to send message";
+    throw new Error(errorMessage);
+  }
+
+  if (!data.message || !data.ticket_id || !data.status) {
+    console.error("Invalid API response:", data);
+    throw new Error("Malformed response from backend");
+  }
+
+  return data;
 }
 
 // --------------------------------------------------
@@ -147,10 +201,10 @@ export async function getConfidenceDistribution() {
 
 export async function getResolutionTrend() {
   const response = await fetch(
-    `${BASE_URL}/admin/analytics/resolution-trend`, 
+    `${BASE_URL}/admin/analytics/resolution-trend`,
     {
-      headers: { 
-        ...authHeaders() 
+      headers: {
+        ...authHeaders(),
       },
     }
   );
@@ -159,10 +213,10 @@ export async function getResolutionTrend() {
 
 export async function getEscalationTrend() {
   const response = await fetch(
-    `${BASE_URL}/admin/analytics/escalation-trend`, 
+    `${BASE_URL}/admin/analytics/escalation-trend`,
     {
-      headers: { 
-        ...authHeaders() 
+      headers: {
+        ...authHeaders(),
       },
     }
   );
@@ -171,41 +225,39 @@ export async function getEscalationTrend() {
 
 export async function getSLAMetrics() {
   const response = await fetch(
-    `${BASE_URL}/admin/analytics/sla-detailed`, 
+    `${BASE_URL}/admin/analytics/sla-detailed`,
     {
-      headers: { 
-        ...authHeaders() 
+      headers: {
+        ...authHeaders(),
       },
     }
   );
 
-  if (!response.ok) {
-     return {
-       avg_resolution_time: "4h 45m",
-       sla_breach_count: 16,
-       backlog_size: 134,
-       breach_rate_trend: 12.2,
-       breach_rate_delta: "1.1%",
-       breach_chart_data: [
-           { date: "Apr 08", breaches: 4 }, { date: "Apr 10", breaches: 5 }, 
-           { date: "Apr 12", breaches: 4 }, { date: "Apr 14", breaches: 6 },
-           { date: "Apr 16", breaches: 9 }, { date: "Apr 18", breaches: 11 },
-           { date: "Apr 20", breaches: 8 }, { date: "Apr 22", breaches: 14 }
-       ],
-       backlog_chart_data: [
-           { date: "Apr 08", tickets: 100 }, { date: "Apr 10", tickets: 105 },
-           { date: "Apr 12", tickets: 108 }, { date: "Apr 14", tickets: 112 },
-           { date: "Apr 16", tickets: 115 }, { date: "Apr 18", tickets: 118 },
-           { date: "Apr 20", tickets: 125 }, { date: "Apr 22", tickets: 134 }
-       ]
-     };
+  if (response.status === 401) {
+    sessionStorage.clear();
+    window.location.href = "/login";
+    throw new Error("Session expired");
   }
+
+  if (!response.ok) {
+    return {
+      avg_resolution_time: "4h 45m",
+      sla_breach_count: 16,
+      backlog_size: 134,
+      breach_rate_trend: 12.2,
+      breach_rate_delta: "1.1%",
+      breach_chart_data: [],
+      backlog_chart_data: [],
+    };
+  }
+
   return handleResponse(response);
 }
 
 // --------------------------------------------------
-// 🔥 Admin Agents API
+// Admin Agents API
 // --------------------------------------------------
+
 export async function getAdminAgents() {
   const response = await fetch(
     `${BASE_URL}/admin/agents`,
@@ -220,7 +272,7 @@ export async function getAdminAgents() {
 }
 
 // --------------------------------------------------
-// Knowledge Base (FAQ) API
+// FAQ API
 // --------------------------------------------------
 
 export async function getAdminFAQs() {
@@ -264,16 +316,12 @@ export async function deleteAdminFAQ(faqId) {
 }
 
 // --------------------------------------------------
-// Agent API (Consolidated)
+// Agent API
 // --------------------------------------------------
 
-/**
- * 🔥 Added: Fetches ticket status aggregates (Open, Escalated, Resolved, Closed)
- * for the Agent Dashboard metric cards.
- */
 export async function getAgentTicketMetrics() {
   const response = await fetch(
-    `${BASE_URL}/agent/ticket-metrics`,
+    `${BASE_URL}/agent/metrics`,
     {
       headers: {
         ...authHeaders(),
@@ -285,7 +333,7 @@ export async function getAgentTicketMetrics() {
 
 export async function getAgentMetrics() {
   const response = await fetch(
-    `${BASE_URL}/agent/metrics`,
+    `${BASE_URL}/agent/workforce`,
     {
       headers: {
         ...authHeaders(),

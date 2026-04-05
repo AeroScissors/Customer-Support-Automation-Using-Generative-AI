@@ -1,38 +1,37 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "../pages/Login";
-
-// Dashboards
 import AgentDashboard from "../dashboards/AgentDashboard/AgentDashboard";
 import AdminDashboard from "../dashboards/AdminDashboard/AdminDashboard";
 import CustomerChat from "../pages/CustomerChat";
+import ProfilePage from "../pages/ProfilePage";
 
-// Admin Tabs
 import AdminOverview from "../dashboards/AdminDashboard/Overview";
 import AdminAnalytics from "../dashboards/AdminDashboard/Analytics";
 import AdminSLA from "../dashboards/AdminDashboard/SLA";
 import AdminKnowledgeBase from "../dashboards/AdminDashboard/KnowledgeBase";
 import AdminAgents from "../dashboards/AdminDashboard/Agents";
 
-// Route Guard
 import ProtectedRoute from "./ProtectedRoute";
 
 export default function AppRoutes() {
   return (
     <Routes>
-      {/* ===================== */}
-      {/* Login (PUBLIC) */}
-      {/* ===================== */}
+      {/* ✅ Both / and /login show the login page */}
       <Route path="/" element={<Login />} />
+      <Route path="/login" element={<Login />} />
 
-      {/* ===================== */}
-      {/* Customer Chat (PUBLIC) */}
-      {/* ===================== */}
       <Route path="/chat" element={<CustomerChat />} />
 
-      {/* ===================== */}
-      {/* Agent (PROTECTED) */}
-      {/* ===================== */}
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        }
+      />
+
       <Route
         path="/agent"
         element={
@@ -42,9 +41,6 @@ export default function AppRoutes() {
         }
       />
 
-      {/* ===================== */}
-      {/* Admin (PROTECTED) */}
-      {/* ===================== */}
       <Route
         path="/admin"
         element={
@@ -61,13 +57,8 @@ export default function AppRoutes() {
         <Route path="agents" element={<AdminAgents />} />
       </Route>
 
-      {/* ===================== */}
-      {/* Fallback */}
-      {/* ===================== */}
-      <Route
-        path="*"
-        element={<div style={{ padding: 20 }}>404 — Not Found</div>}
-      />
+      {/* Catch-all → redirect to login */}
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 }

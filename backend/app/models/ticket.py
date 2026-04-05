@@ -10,12 +10,13 @@ from enum import Enum
 class TicketStatus(str, Enum):
     RESOLVED = "RESOLVED"
     AI_RESOLVED = "AI_RESOLVED"
+    HUMAN_RESOLVED = "HUMAN_RESOLVED"   # ✅ Agent resolved
     ESCALATED = "ESCALATED"
     CLOSED = "CLOSED"
 
 
 # --------------------------------------------------
-# Ticket Message Model (NEW)
+# Ticket Message Model
 # --------------------------------------------------
 class TicketMessage(BaseModel):
     sender: Literal["customer", "ai", "agent"]
@@ -42,6 +43,9 @@ class TicketResponse(BaseModel):
     messages: List[TicketMessage]
 
     confidence_score: Optional[float] = Field(None, ge=0, le=1)
+
+    # ✅ FIX: Added so AIInsightPanel can show "Why AI escalated"
+    decision_reason: Optional[str] = None
 
     created_at: datetime
     resolved_at: Optional[datetime] = None

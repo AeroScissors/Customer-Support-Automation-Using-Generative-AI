@@ -1,0 +1,4 @@
+$env:CUDA_VISIBLE_DEVICES="none"
+$env:OLLAMA_NUM_GPU="0"
+Start-Process "ollama" -ArgumentList "serve" -NoNewWindow
+Start-Sleep -Seconds 5  # wait for Ollama to be ready before backend starts

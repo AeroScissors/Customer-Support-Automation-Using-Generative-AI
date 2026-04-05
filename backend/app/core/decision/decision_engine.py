@@ -16,8 +16,9 @@ def make_decision(
 
     # --------------------------------------------------
     # 1️⃣ Unsafe intent → escalate immediately
+    # ✅ FIX: check_intent_risk returns "is_risky", not "is_safe"
     # --------------------------------------------------
-    if not intent_result.get("is_safe", True):
+    if intent_result.get("is_risky", False):
         return {
             "decision": "ESCALATE_TO_HUMAN",
             "reason": intent_result.get("reason", "Unsafe intent detected")
