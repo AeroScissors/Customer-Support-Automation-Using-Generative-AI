@@ -31,7 +31,7 @@ import {
 import { useEffect, useState } from "react";
 import { getAdminAgents } from "../../services/api";
 
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "https://aeroscissors-nebulacore.hf.space";
 
 export default function AdminAgents() {
   const [metrics, setMetrics] = useState({
