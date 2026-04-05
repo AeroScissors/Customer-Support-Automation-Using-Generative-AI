@@ -3,7 +3,7 @@
 > A full-stack AI-powered customer support system with RAG pipeline, decision engine, and multi-role dashboards — deployed on free-tier cloud infrastructure.
 
 [![Frontend](https://img.shields.io/badge/🖥%20Frontend-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://customer-support-automation-using-g.vercel.app)
-[![Backend](https://img.shields.io/badge/⚙%20Backend-HuggingFace%20Spaces-FFD21E?style=for-the-badge)](https://aeroscissors-nebulacore.hf.space)
+[![Backend](https://img.shields.io/badge/⚙%20Backend-HuggingFace%20Spaces-FFD21E?style=for-the-badge)](https://huggingface.co/spaces/AeroScissors/NebulaCORE)
 [![Database](https://img.shields.io/badge/🗄%20Database-MongoDB%20Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://cloud.mongodb.com)
 
 ---
