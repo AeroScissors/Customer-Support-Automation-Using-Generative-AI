@@ -25,13 +25,13 @@ export default function CustomerChat() {
       const data = await sendChatMessage(text);
 
       const aiReply =
-        data.response ||
-        (data.decision === "ESCALATE_TO_HUMAN"
+        data.message ||
+        (data.status === "ESCALATED"
           ? "Your request has been forwarded to a support agent."
           : "I'm unable to answer this right now. A support agent will assist you shortly.");
 
       const ticketInfo = data.ticket_id
-        ? `\nTICKET:${data.ticket_id}|STATUS:${data.decision}`
+        ? `\nTICKET:${data.ticket_id}|STATUS:${data.status}`
         : "";
 
       setMessages((prev) => [
