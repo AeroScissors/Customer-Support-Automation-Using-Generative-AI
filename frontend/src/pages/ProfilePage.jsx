@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Box, Typography, Avatar, Chip, Divider, CircularProgress } from "@mui/material";
 import { ArrowLeft, Shield, Clock, Ticket, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = "https://aeroscissors-nebulacore.hf.space";
 
 function authHeaders() {
   const token = sessionStorage.getItem("access_token");
