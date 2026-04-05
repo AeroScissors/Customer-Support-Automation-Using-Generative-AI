@@ -1,47 +1,34 @@
 from typing import List, Any
 
+STOPWORDS = {"how", "do", "i", "my", "the", "a", "an", "is", "it", "to", "can", "you", "me", "we", "our", "your"}
 
 def _extract_text(item: Any) -> str:
-    """
-    Safely extract text from retrieved context items.
-    """
     if isinstance(item, str):
         return item
-
     if isinstance(item, dict):
         for value in item.values():
             if isinstance(value, str):
                 return value
         return str(item)
-
     return str(item)
 
 
-def compute_confidence(
-    query: str,
-    retrieved_context: List[Any]
-) -> float:
-    """
-    Computes a confidence score (0.0 - 1.0) based on
-    how well the retrieved context supports the user query.
-    """
-
-    # 1️⃣ No context → almost zero confidence
+def compute_confidence(query: str, retrieved_context: List[Any]) -> float:
     if not retrieved_context:
         return 0.05
 
-    # Normalize context safely
     context_text = " ".join(
         _extract_text(item) for item in retrieved_context
     ).lower()
 
-    query_tokens = set(query.lower().split())
+    # Filter out stopwords before matching
+    query_tokens = set(query.lower().split()) - STOPWORDS
 
-    # Count keyword overlap
-    matches = sum(
-        1 for token in query_tokens if token in context_text
-    )
+    if not query_tokens:
+        return 0.5
 
-    confidence = min(0.95, 0.2 + (matches * 0.15))
+    matches = sum(1 for token in query_tokens if token in context_text)
+    ratio = matches / len(query_tokens)
+    confidence = min(0.95, 0.4 + (ratio * 0.55))
 
     return round(confidence, 2)

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "RF-001",
+    "category": "refunds",
+    "question": "When will I receive my refund?",
+    "answer": "Refunds are processed within 5 to 7 business days after the return is approved. The credited amount may take additional time depending on your bank or payment provider."
+  },
+  {
+    "id": "RF-002",
+    "category": "refunds",
+    "question": "My refund is delayed",
+    "answer": "If your refund has not been received within the expected timeline, please ensure the return was approved. You may contact support with your return reference ID for further assistance."
+  },
+  {
+    "id": "RF-003",
+    "category": "refunds",
+    "question": "How will my refund be issued?",
+    "answer": "Refunds are issued to the original payment method used during purchase. Alternative refund methods are not supported."
+  },
+  {
+    "id": "RF-004",
+    "category": "refunds",
+    "question": "Can I cancel my order and get a refund?",
+    "answer": "Orders can be canceled for a full refund only before shipment. Once shipped, cancellation is not possible and standard return policies apply."
+  },
+  {
+    "id": "RF-005",
+    "category": "refunds",
+    "question": "I received a partial refund",
+    "answer": "Partial refunds may be issued if returned items are damaged, missing accessories, or not eligible under the return policy."
+  },
+  {
+    "id": "RF-006",
+    "category": "refunds",
+    "question": "Do shipping charges get refunded?",
+    "answer": "Shipping charges are non-refundable unless the return is due to a damaged or incorrect item."
+  },
+  {
+    "id": "RF-007",
+    "category": "refunds",
+    "question": "My return was rejected",
+    "answer": "Returns may be rejected if items do not meet the return eligibility criteria or are returned outside the allowed return window."
+  },
+  {
+    "id": "RF-008",
+    "category": "refunds",
+    "question": "How do I check refund status?",
+    "answer": "Refund status can be checked from your account under the orders section or by contacting support with your order ID."
+  }
+]

@@ -11,11 +11,9 @@ from app.core.rag.embedder import Embedder
 # Resolve project root safely (works from anywhere)
 # backend/app/core/rag/retriever.py -> project root
 # -------------------------------------------------------------------
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
+PROJECT_ROOT = Path(__file__).resolve().parents[4]
 FAISS_DIR = PROJECT_ROOT / "data" / "faiss_index"
 
-print(f"[RETRIEVER] FAISS path: {FAISS_DIR}")
-print(f"[RETRIEVER] index exists: {(FAISS_DIR / 'index.bin').exists()}")
 
 class Retriever:
     """

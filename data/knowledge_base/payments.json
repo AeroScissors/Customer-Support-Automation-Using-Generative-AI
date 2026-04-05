@@ -1,0 +1,50 @@
+[
+  {
+    "id": "PM-001",
+    "category": "payments",
+    "question": "My payment failed but the amount was deducted",
+    "answer": "If a payment fails but the amount is deducted, the deducted amount is usually reversed within 3 to 5 business days. If not received, please contact support."
+  },
+  {
+    "id": "PM-002",
+    "category": "payments",
+    "question": "Why was my payment declined?",
+    "answer": "Payments may be declined due to insufficient balance, incorrect details, bank restrictions, or temporary gateway issues."
+  },
+  {
+    "id": "PM-003",
+    "category": "payments",
+    "question": "I was charged twice for the same order",
+    "answer": "In case of duplicate charges, one of the transactions will be automatically refunded within 5 to 7 business days."
+  },
+  {
+    "id": "PM-004",
+    "category": "payments",
+    "question": "What payment methods are supported?",
+    "answer": "We support credit cards, debit cards, UPI, net banking, and select digital wallets. Availability may vary by region."
+  },
+  {
+    "id": "PM-005",
+    "category": "payments",
+    "question": "Is my payment information secure?",
+    "answer": "All payment transactions are processed through secure, PCI-compliant payment gateways. We do not store card details on our servers."
+  },
+  {
+    "id": "PM-006",
+    "category": "payments",
+    "question": "Can I change my payment method after placing an order?",
+    "answer": "Payment methods cannot be changed after an order is placed. You may cancel the order and place a new one using a different payment method if eligible."
+  },
+  {
+    "id": "PM-007",
+    "category": "payments",
+    "question": "Why is my UPI payment pending?",
+    "answer": "UPI payments may remain pending due to bank processing delays. Pending transactions usually resolve automatically within 24 hours."
+  },
+  {
+    "id": "PM-008",
+    "category": "payments",
+    "question": "Do you offer cash on delivery?",
+    "answer": "Cash on delivery is available for select locations and orders. Eligibility is determined at checkout."
+  }
+]
