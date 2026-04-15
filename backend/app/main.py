@@ -1,5 +1,13 @@
+# File: backend/app/main.py
+
+import os
+from dotenv import load_dotenv
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+# Load .env BEFORE anything else
+load_dotenv()
 
 # Routers
 from app.api import tickets, faq, chat
@@ -33,6 +41,14 @@ app.add_middleware(
 @app.on_event("startup")
 def startup_event():
     init_indexes()
+    
+    try:
+        from app.core.llm.model_loader import llm_loader
+        llm_loader.ensure_ready()
+        print(f"Ollama is running — model: {llm_loader.get_model_name()}")
+    except RuntimeError as e:
+        print(f"Ollama not available: {e}")
+        print("Backend will still start. Ollama needed only for chat.")
 
 
 # --------------------------------------------------
