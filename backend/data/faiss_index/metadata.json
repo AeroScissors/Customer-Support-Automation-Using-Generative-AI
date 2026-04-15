@@ -1,27 +1,197 @@
 [
   {
-    "question": "How do I track my order?",
-    "answer": "Customers can track their orders by logging into their account and navigating to the \u201cMy Orders\u201d section. Once an order has been dispatched, a \u201cTrack Shipment\u201d button becomes available. Clicking this will redirect to the courier partner\u2019s tracking page with real-time updates.\n\nTracking details are typically available within 24 hours of shipment. If the tracking link does not update after 48 hours, customers should contact support.\n\nOrders shipped via standard delivery typically arrive within 3\u20135 business days. Express delivery arrives within 1\u20132 business days.",
-    "category": "General"
+    "question": "How can I create an account?",
+    "answer": "Click on Sign Up, enter your details, and verify your email to activate your account.",
+    "category": "general"
   },
   {
-    "question": "What is your refund policy?",
-    "answer": "Refunds are processed once the returned item is received and inspected. Customers must initiate a return within 14 days of delivery.\n\nRefund timelines:\n\nCredit/Debit Cards: 5\u20137 business days\n\nUPI Payments: 2\u20134 business days\n\nNet Banking: 3\u20136 business days\n\nWallet Payments: 24\u201348 hours\n\nIf the refund has not been received after 7 business days, customers should contact their bank before contacting support.\n\nRefunds are not applicable for digital products, downloadable content, or clearance items.",
-    "category": "General"
+    "question": "I forgot my password, what should I do?",
+    "answer": "Click on 'Forgot Password' on the login page and follow the instructions to reset it.",
+    "category": "general"
   },
   {
-    "question": "What should I do if my bank flagged a transaction as fraud?",
-    "answer": "If a transaction has been flagged as fraud by your bank, customers should immediately contact our billing team with the transaction ID, order ID, and registered email address.\n\nImportant:\nIf a customer initiates a chargeback directly with their bank without contacting us first, the account may be temporarily suspended until the investigation is complete.\n\nChargeback investigations typically take 10\u201321 business days.\n\nLegal disputes or compensation claims are handled only by our compliance team and are not processed through regular support.",
-    "category": "General"
+    "question": "Can I change my registered email address?",
+    "answer": "Yes, go to account settings and update your email after verifying your identity.",
+    "category": "general"
   },
   {
-    "question": "Why is my shipment delayed?",
-    "answer": "Shipping delays may occur due to high demand, weather disruptions, courier backlogs, or incorrect address information.\n\nIf the tracking status shows \u201cIn Transit\u201d for more than 5 days without updates, customers should wait an additional 48 hours before contacting support.\n\nIf the tracking status shows \u201cDelivered\u201d but the package is not received:\n\nCheck with neighbors or building reception.\n\nContact the courier within 24 hours.\n\nThen contact support with proof of non-delivery.\n\nOrders delayed beyond 7 business days from estimated delivery date are eligible for priority investigation.",
-    "category": "General"
+    "question": "Why was my payment deducted but order not confirmed?",
+    "answer": "This can happen due to payment gateway delays. The amount will be auto-refunded within 3-5 working days.",
+    "category": "payments"
   },
   {
-    "question": "Why was my account suspended?",
-    "answer": "Accounts may be suspended due to:\n\nMultiple failed payment attempts\n\nChargeback disputes\n\nViolation of platform policies\n\nSuspicious login activity\n\nTemporary suspensions are automatically lifted within 72 hours after verification.\n\nPermanent suspensions require manual review by the compliance team.\n\nCustomers threatening legal action or compensation claims are automatically routed to senior support specialists.",
-    "category": "General"
+    "question": "What payment methods are supported?",
+    "answer": "We support credit cards, debit cards, UPI, net banking, and selected wallets.",
+    "category": "payments"
+  },
+  {
+    "question": "Is it safe to save my card details?",
+    "answer": "Yes, all payment information is encrypted and stored securely following industry standards.",
+    "category": "payments"
+  },
+  {
+    "question": "How can I download my invoice?",
+    "answer": "Go to Orders, select the order, and click on 'Download Invoice'.",
+    "category": "billing"
+  },
+  {
+    "question": "Why was I charged twice?",
+    "answer": "Duplicate charges are usually temporary and get reversed automatically within a few days.",
+    "category": "billing"
+  },
+  {
+    "question": "Can I update my billing address?",
+    "answer": "Yes, you can update your billing address in your profile settings.",
+    "category": "billing"
+  },
+  {
+    "question": "How do I secure my account?",
+    "answer": "Enable two-factor authentication and use a strong password that you don\u2019t reuse elsewhere.",
+    "category": "security"
+  },
+  {
+    "question": "I noticed suspicious activity on my account.",
+    "answer": "Immediately reset your password and contact support to secure your account.",
+    "category": "security"
+  },
+  {
+    "question": "Do you support two-factor authentication?",
+    "answer": "Yes, you can enable 2FA from your account security settings.",
+    "category": "security"
+  },
+  {
+    "question": "My refund is taking too long, it's been 10 days.",
+    "answer": "Refunds typically take 5-7 working days. If delayed beyond that, please contact support with your transaction ID.",
+    "category": "payments"
+  },
+  {
+    "question": "I was charged but my bank says the payment failed.",
+    "answer": "This is usually a temporary authorization hold. The amount will be released automatically by your bank.",
+    "category": "payments"
+  },
+  {
+    "question": "The app is not letting me log in even with correct credentials.",
+    "answer": "Try clearing cache or resetting your password. If the issue persists, contact support.",
+    "category": "general"
+  },
+  {
+    "question": "Where is my order?",
+    "answer": "You can track your order using the tracking link sent to your registered email after shipment. If the link does not show updates, please allow up to 24 hours for tracking information to refresh.",
+    "category": "order_tracking"
+  },
+  {
+    "question": "My order status says shipped but I haven't received it yet",
+    "answer": "Once an order is marked as shipped, delivery typically takes 3 to 5 business days depending on your location. Delays may occur due to courier issues or public holidays.",
+    "category": "order_tracking"
+  },
+  {
+    "question": "Why is my order delayed?",
+    "answer": "Orders may be delayed due to high demand, weather conditions, or logistics constraints. If your order is delayed beyond the estimated delivery date, please contact support with your order ID.",
+    "category": "order_tracking"
+  },
+  {
+    "question": "Can I change my delivery address after placing the order?",
+    "answer": "Delivery address changes are only possible before the order is shipped. Once shipped, the address cannot be modified due to courier restrictions.",
+    "category": "order_tracking"
+  },
+  {
+    "question": "The tracking link is not working",
+    "answer": "Tracking links may take up to 24 hours to activate after shipment. If the issue persists, please verify the link or contact support for assistance.",
+    "category": "order_tracking"
+  },
+  {
+    "question": "My order shows delivered but I did not receive it",
+    "answer": "If the tracking status shows delivered but you have not received the package, please check with neighbors or security personnel. If still unresolved, contact support within 48 hours.",
+    "category": "order_tracking"
+  },
+  {
+    "question": "Do you deliver on weekends?",
+    "answer": "Weekend deliveries depend on the courier service assigned to your order. Some locations may receive deliveries on Saturdays, while Sundays are typically excluded.",
+    "category": "order_tracking"
+  },
+  {
+    "question": "How do I track multiple orders?",
+    "answer": "Each order has a unique tracking link sent via email. You can track multiple orders individually using their respective tracking links.",
+    "category": "order_tracking"
+  },
+  {
+    "question": "My payment failed but the amount was deducted",
+    "answer": "If a payment fails but the amount is deducted, the deducted amount is usually reversed within 3 to 5 business days. If not received, please contact support.",
+    "category": "payments"
+  },
+  {
+    "question": "Why was my payment declined?",
+    "answer": "Payments may be declined due to insufficient balance, incorrect details, bank restrictions, or temporary gateway issues.",
+    "category": "payments"
+  },
+  {
+    "question": "I was charged twice for the same order",
+    "answer": "In case of duplicate charges, one of the transactions will be automatically refunded within 5 to 7 business days.",
+    "category": "payments"
+  },
+  {
+    "question": "What payment methods are supported?",
+    "answer": "We support credit cards, debit cards, UPI, net banking, and select digital wallets. Availability may vary by region.",
+    "category": "payments"
+  },
+  {
+    "question": "Is my payment information secure?",
+    "answer": "All payment transactions are processed through secure, PCI-compliant payment gateways. We do not store card details on our servers.",
+    "category": "payments"
+  },
+  {
+    "question": "Can I change my payment method after placing an order?",
+    "answer": "Payment methods cannot be changed after an order is placed. You may cancel the order and place a new one using a different payment method if eligible.",
+    "category": "payments"
+  },
+  {
+    "question": "Why is my UPI payment pending?",
+    "answer": "UPI payments may remain pending due to bank processing delays. Pending transactions usually resolve automatically within 24 hours.",
+    "category": "payments"
+  },
+  {
+    "question": "Do you offer cash on delivery?",
+    "answer": "Cash on delivery is available for select locations and orders. Eligibility is determined at checkout.",
+    "category": "payments"
+  },
+  {
+    "question": "When will I receive my refund?",
+    "answer": "Refunds are processed within 5 to 7 business days after the return is approved. The credited amount may take additional time depending on your bank or payment provider.",
+    "category": "refunds"
+  },
+  {
+    "question": "My refund is delayed",
+    "answer": "If your refund has not been received within the expected timeline, please ensure the return was approved. You may contact support with your return reference ID for further assistance.",
+    "category": "refunds"
+  },
+  {
+    "question": "How will my refund be issued?",
+    "answer": "Refunds are issued to the original payment method used during purchase. Alternative refund methods are not supported.",
+    "category": "refunds"
+  },
+  {
+    "question": "Can I cancel my order and get a refund?",
+    "answer": "Orders can be canceled for a full refund only before shipment. Once shipped, cancellation is not possible and standard return policies apply.",
+    "category": "refunds"
+  },
+  {
+    "question": "I received a partial refund",
+    "answer": "Partial refunds may be issued if returned items are damaged, missing accessories, or not eligible under the return policy.",
+    "category": "refunds"
+  },
+  {
+    "question": "Do shipping charges get refunded?",
+    "answer": "Shipping charges are non-refundable unless the return is due to a damaged or incorrect item.",
+    "category": "refunds"
+  },
+  {
+    "question": "My return was rejected",
+    "answer": "Returns may be rejected if items do not meet the return eligibility criteria or are returned outside the allowed return window.",
+    "category": "refunds"
+  },
+  {
+    "question": "How do I check refund status?",
+    "answer": "Refund status can be checked from your account under the orders section or by contacting support with your order ID.",
+    "category": "refunds"
   }
 ]
